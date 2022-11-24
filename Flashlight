@@ -1,148 +1,164 @@
---// Flash light (Execute in prerun shop)
-function FullVersion() do
-local Functions = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Functions.lua"))()
-local CustomShop = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors/Custom%20Shop%20Items/Source.lua"))()
 
-
--- Create your tool here
-local exampleTool = game:GetObjects("rbxassetid://11475447684")[1]
-
--- Create custom shop item
-CustomShop.CreateItem(exampleTool, {
-    Title = "Flash light",
-    Desc = "---",
-    Image = "https://static.wikia.nocookie.net/doors-game/images/8/88/Icon_crucifix2.png/revision/latest?cb=20220728033038",
-    Price = 65,
-    Stack = 0,
-})
-local Players = game:GetService("Players")
-local UIS = game:GetService("UserInputService")
-local tool = exampleTool
-local Plr = Players.LocalPlayer
-local Char = Plr.Character or Plr.CharacterAdded:Wait()
-local Hum = Char:WaitForChild("Humanoid")
-local RightArm = Char:WaitForChild("RightUpperArm")
-local LeftArm = Char:WaitForChild("LeftUpperArm")
-local RightC1 = RightArm.RightShoulder.C1
-local LeftC1 = LeftArm.LeftShoulder.C1
-        local function setupCrucifix(tool)
-        RightArm.Name = "R_Arm"
-        LeftArm.Name = "L_Arm"
-        
-        RightArm.RightShoulder.C1 = RightC1 * CFrame.Angles(math.rad(-90), math.rad(-15), 0)
-        LeftArm.LeftShoulder.C1 = LeftC1 * CFrame.new(-0.2, -0.3, -0.5) * CFrame.Angles(math.rad(-125), math.rad(25), math.rad(25))
-        for _, v in next, Hum:GetPlayingAnimationTracks() do
-            v:Stop()
-        end
-        end
-tool.Equipped:Connect(function()
-    setupCrucifix(exampleTool)
-    game.Players.LocalPlayer:SetAttribute("Hidden", true)
-	UIS.InputBegan:Connect(function(input)
-	    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		    if tool.Parent == game.Players.LocalPlayer.Character then
-                   if game.Workspace:FindFirstChild("Lookman") then
-                      local eyes = game.Workspace:FindFirstChild("Lookman").Core
-                      local crucifixed = Instance.new("BoolValue")
-                      crucifixed.Parent = eyes
-                      crucifixed.Name = "GettingCrucifixed"
-                      eyes.Ambience.Playing = false
-                      eyes.Repent.Looped = true
-                      eyes.Repent:Play()
-                      local CameraShaker = require(game.ReplicatedStorage.CameraShaker)
-local camara = game.Workspace.CurrentCamera
-local camShake = CameraShaker.new(Enum.RenderPriority.Camera.Value, function(shakeCf)
-camara.CFrame = camara.CFrame * shakeCf
-end)
-camShake:Start()
-
-camShake:ShakeOnce(3.5, 10, 0.1, 1.5)
-wait(1.2)
-                      local CameraShaker = require(game.ReplicatedStorage.CameraShaker)
-local camara = game.Workspace.CurrentCamera
-local camShake = CameraShaker.new(Enum.RenderPriority.Camera.Value, function(shakeCf)
-camara.CFrame = camara.CFrame * shakeCf
-end)
-camShake:Start()
-
-camShake:ShakeOnce(3.5, 10, 0.1, 1.5)
-wait(1.2)
-local CameraShaker = require(game.ReplicatedStorage.CameraShaker)
-local camara = game.Workspace.CurrentCamera
-local camShake = CameraShaker.new(Enum.RenderPriority.Camera.Value, function(shakeCf)
-camara.CFrame = camara.CFrame * shakeCf
-end)
-camShake:Start()
-
-camShake:ShakeOnce(3.5, 10, 0.1, 1.5)
-wait(1.2)
-local CameraShaker = require(game.ReplicatedStorage.CameraShaker)
-local camara = game.Workspace.CurrentCamera
-local camShake = CameraShaker.new(Enum.RenderPriority.Camera.Value, function(shakeCf)
-camara.CFrame = camara.CFrame * shakeCf
-end)
-camShake:Start()
-
-camShake:ShakeOnce(3.5, 10, 0.1, 1.5)
-                      wait(1.2)
-                      local ClonedMesh = tool.NewOneBro:Clone()
-                      ClonedMesh.Parent = game.Workspace
-                      ClonedMesh.Anchored = true
-                      tool:Destroy()
-                      eyes.Repent.Playing = false
-                      eyes.Scream:Play()
-                      eyes.PointLight.Enabled = false
-                      eyes.PointLight.Enabled = false
-                      local CameraShaker = require(game.ReplicatedStorage.CameraShaker)
-local camara = game.Workspace.CurrentCamera
-local camShake = CameraShaker.new(Enum.RenderPriority.Camera.Value, function(shakeCf)
-camara.CFrame = camara.CFrame * shakeCf
-end)
-camShake:Start()
-
-camShake:ShakeOnce(6, 10, 0.1, 4.5)
-                      loadstring(game:HttpGet(("https://raw.githubusercontent.com/lolthatseazy/KillEyes/main/Source.lua"),true))()
-                      wait(0.3)
-                      game.Workspace:FindFirstChild("Lookman"):Destroy()
-               end
-               end
-              end
-	end)
-    end)
-tool.Unequipped:Connect(function()
-    game.Players.LocalPlayer:SetAttribute("Hidden", false)
-        RightArm.Name = "RightUpperArm"
-        LeftArm.Name = "LeftUpperArm"
-        
-        RightArm.RightShoulder.C1 = RightC1
-        LeftArm.LeftShoulder.C1 = LeftC1
-end)
-
-local Unlock = require(game.Players.LocalPlayer.PlayerGui.MainUI.Initiator.Main_Lobby.RemoteListener.Modules.AchievementUnlock)
-local Achievements = debug.getupvalue(Unlock, 1)
-
-local custom = {
-    Title = "Flash light", 
-    Desc = "tool",  --first line
-    Reason = "---", --change this for second line of the badgs desc
-    BadgeId = 2127965910, --change badge id for image
-    Category = 0,
+local ModuleScripts = {
+        MainGame = require(game:GetService("Players").LocalPlayer.PlayerGui.MainUI.Initiator["Main_Game"]),
 }
 
-local old = {}
-for i, v in next, Achievements.Join do
-    old[i] = v
+-- Services
+
+local Players = game:GetService("Players")
+local ReSt = game:GetService("ReplicatedStorage")
+
+-- Variables
+
+local Plr = Players.LocalPlayer
+
+local SelfModules = {
+	UI = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/UI.lua"))(),
+	Functions = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Functions.lua"))(),
+}
+
+local BlacklistedNames = {"Skeleton Key", "M249"}
+local CustomShop = { Selected = {} }
+
+-- Items List
+
+local List = Plr.PlayerGui.MainUI.ItemShop.Items
+
+if List.ClassName ~= "ScrollingFrame" then
+	List = SelfModules.UI.Create("ScrollingFrame", {
+		Name = "Crucifix",
+		Active = true,
+		AnchorPoint = Vector2.new(0.5, 0),
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		CanvasSize = UDim2.new(0, 0, 0, 0),
+		Position = UDim2.new(0.5, 0, 0.18, 0),
+		Size = UDim2.new(1, 0, 0.6, 0),
+		ZIndex = 5,
+		HorizontalScrollBarInset = Enum.ScrollBarInset.Always,
+		ScrollBarThickness = 0,
+
+		SelfModules.UI.Create("UIGridLayout", {
+			SortOrder = Enum.SortOrder.LayoutOrder,
+			CellPadding = UDim2.new(0, 15, 0, 15),
+		}),
+
+		SelfModules.UI.Create("UIPadding", {
+			PaddingBottom = UDim.new(0, 4),
+			PaddingLeft = UDim.new(0, 4),
+			PaddingRight = UDim.new(0, 4),
+			PaddingTop = UDim.new(0, 4),
+		}),
+	})
+
+	-- Parent existing items to list
+
+	for _, v in next, Plr.PlayerGui.MainUI.ItemShop.Items:GetChildren() do
+		if v.ClassName == "TextButton" then
+			v.Parent = List
+		end
+	end
+
+	Plr.PlayerGui.MainUI.ItemShop.Items:Destroy()
+	List.Parent = Plr.PlayerGui.MainUI.ItemShop
+	List.UIGridLayout.CellSize = UDim2.new(0.5, -8, 0, List.AbsoluteSize.Y / 1 * 0.31 - 4)
 end
 
-for i, v in next, custom do
-    Achievements.Join[i] = v
+-- Functions
+
+CustomShop.CreateItem = function(tool, config)
+	task.spawn(function()
+		-- Config setup
+
+		local rawItemName = string.gsub(config.Title, " ", "")
+
+		config.RawItemName = rawItemName
+
+		-- Check
+
+		if List:FindFirstChild("CustomItem_".. config.RawItemName) then
+			List["CustomItem_".. config.RawItemName]:Destroy()
+		end
+
+		if ReSt.ItemShop:FindFirstChild(config.RawItemName) then
+			ReSt.ItemShop[config.RawItemName]:Destroy()
+		end
+
+		-- Item creation
+
+		local Item = { Tool = tool, Config = config }
+
+		local button = List:FindFirstChildOfClass("TextButton"):Clone()
+		local selected = false
+		local connections = {}
+
+		button.Visible = true
+		button.Name = "CustomItem_".. config.RawItemName
+		button.Title.Text = config.Title
+		button.Desc.Text = config.Desc
+		button.ImageLabel.Image = LoadCustomAsset(config.Image)
+		button.Price.Text = config.Price
+
+		if not config.Stack or config.Stack <= 1 then
+			button.Stack.Visible = false
+		else
+			button.Stack.Visible = true
+			button.Stack.Text = "x".. config.Stack
+		end
+
+		button.Parent = List
+		Item.Button = button
+
+		-- Folder
+
+		local folder = Instance.new("Folder")
+		folder.Name = config.RawItemName
+		folder.Parent = ReSt.ItemShop
+
+		folder:SetAttribute("Price", config.Price)
+
+		-- Select item
+
+		connections.select = button.MouseButton1Down:Connect(function()
+			selected = not selected
+
+			button.BackgroundTransparency = selected and 0.5 or 0.9
+			Plr.PlayerGui.MainUI.Initiator.Main_Game.PreRun[selected and "Press" or "PressDown"]:Play()
+
+			--
+
+			local upvs = debug.getupvalues(getconnections(List:FindFirstChildOfClass("TextButton").MouseButton1Down)[1].Function)
+			local selectedItems = upvs[1]
+
+			if selected then
+				selectedItems[#selectedItems + 1] = config.RawItemName
+				CustomShop.Selected[#CustomShop.Selected + 1] = Item
+			else
+				table.remove(selectedItems, table.find(selectedItems, config.RawItemName))
+				table.remove(CustomShop.Selected, table.find(CustomShop.Selected, Item))
+			end
+
+			upvs[4]() -- Update price
+		end)
+
+		-- Update list height
+
+		local buttonsCount = 0
+
+		for _, v in next, List:GetChildren() do
+			if v.ClassName == "TextButton" and v.Visible then
+				buttonsCount += 1
+			end
+		end
+
+		local rowCount = math.round(buttonsCount / 2)
+		local rowHeight = 8 + rowCount * (List.AbsoluteSize.Y / 1 * 0.31 - 4) + (rowCount - 1) * 15
+
+		List.CanvasSize = UDim2.new(0, 0, 0, rowHeight)
+	end)
 end
 
-Unlock(nil, "Join")
+-- Scripts
+loadstring(game:HttpGet('https://raw.githubusercontent.com/Johnny39871/assets/main/crucifixo'))()
 
-for i, v in next, old do
-    Achievements.Join[i] = v
-end
-end
-end
-FullVersion()
+return CustomShop
